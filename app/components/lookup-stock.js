@@ -40,8 +40,6 @@ function getSentiment(stock){
       });
   });
 }
-
->>>>>>> 4eb0dbd4a599abfc7392f1d8eda147f81b5b1a0d
 export default Component.extend({
   searchSuccess: false,
   error: false,
