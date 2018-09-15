@@ -2,8 +2,6 @@ import Component from '@ember/component';
 import $ from 'jquery';
 import { computed } from '@ember/object';
 
-<<<<<<< HEAD
-=======
 function getSentiment(stock){
   let url = "https://api.iextrading.com/1.0/stock/" + stock + "/news";
   $.getJSON(url, function(data){
