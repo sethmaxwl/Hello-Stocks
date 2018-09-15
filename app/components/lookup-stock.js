@@ -7,27 +7,9 @@ export default Component.extend({
   graphData: computed(function(){
     return [];
   }),
-  graphOptions: {
-    chart: {
-      type: 'area'
-    },
-    title: {
-      text:  "Stock Trends"
-    },
-    xAxis:{
-      title:{
-        text: 'XAXIS'
-      }
-    },
-    yAxis: {
-      title: {
-        text: 'YAXIS'
-      }
-    },
-    series:{
-      data: graphData
-    }
-  },
+  graphOptions: computed(function(){
+    return {};
+  }),
   actions:{
     search(){
       this.set('data', []);
@@ -40,10 +22,10 @@ export default Component.extend({
         for(var i=0;i<30;i++){
           d.push([data[data.length-(i+1)].minute, data[data.length-(i+1)].close]);
         }
-        console.log(d);
+        self.set('graphOptions', {chart: {type: 'area'},title: {text:  "Stock Trends"},xAxis:{title:{text: 'XAXIS'},categories: ['stock']},yAxis: {title: {text: 'YAXIS'}},series:{data: self.graphData}});
         self.set('searchSuccess', true);
       }).fail(function(e){
-        this.set('searchSuccess', false);
+        self.set('searchSuccess', false);
         self.set('error', true);
       });
     }

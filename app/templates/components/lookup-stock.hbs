@@ -6,4 +6,9 @@
   {{#if searchSuccess}}
     {{high-charts mode=mode chartOptions=this.graphOptions content=data theme=theme}}
   {{/if}}
+  {{#if error}}
+  <div class="alert alert-danger" style='margin-top: 5%;'>
+    <strong>Error!</strong> That stock symbol is invalid. Please try again.
+  </div>
+  {{/if}}
 </div>
