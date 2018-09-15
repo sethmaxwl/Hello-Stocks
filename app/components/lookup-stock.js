@@ -12,10 +12,9 @@ function getSentiment(stock){
       if(i < data.length) json += ',';
     }
     json += "]}";
-    console.log(JSON.parse(json));
     let score = 0;
     $.ajax({
-      url: "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
+      url: "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
       beforeSend: function(xhrObj){
         // Request headers
         xhrObj.setRequestHeader("Content-Type","application/json");
@@ -23,19 +22,20 @@ function getSentiment(stock){
       },
       type: "POST",
       // Request body
-      data: JSON.parse(json),
+      data: json,
     })
-      .done(function(data) {
-        for (let i = 0; i < data.length; i++) {
-          score += data.get("documents")[i].get("score");
+      .done(function(response) {
+        let scores = response.documents;
+        for (let i = 0; i < scores.length; i++) {
+          score += scores.get(i + ".score");
         }
+        score = score/scores.length;
+        console.log(score);
+        return score;
       })
       .fail(function() {
-        alert("error");
+        alert("BIG ERROR");
       });
-    score = score/data.length;
-    console.log(score);
-    return score;
   });
 }
 
