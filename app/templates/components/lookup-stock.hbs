@@ -4,7 +4,7 @@
     {{input type="text" value=this.stockSearch placeholder="Search for a stock" enter="search"}}
   </div>
   {{#if searchSuccess}}
-    {{high-charts mode=mode chartOptions=this.graphOptions content=data theme=theme}}
+    {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
   {{/if}}
   {{#if error}}
   <div class="alert alert-danger" style='margin-top: 5%;'>

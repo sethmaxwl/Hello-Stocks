@@ -2,66 +2,69 @@ import Component from '@ember/component';
 import $ from 'jquery';
 import { computed } from '@ember/object';
 
-function getSentiment(stock){
-  let url = "https://api.iextrading.com/1.0/stock/" + stock + "/news";
-  $.getJSON(url, function(data){
-    let json = '{"documents": [';
-    for(let i = 0; i < data.length;){
-      let title = data.get(i + ".headline");
-      json += '{"language": "en", "id": "' + (++i) + '", "text": "' + title + '"}'
-      if(i < data.length) json += ',';
-    }
-    json += "]}";
-    console.log(JSON.parse(json));
-    let score = 0;
-    $.ajax({
-      url: "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
-      beforeSend: function(xhrObj){
-        // Request headers
-        xhrObj.setRequestHeader("Content-Type","application/json");
-        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","a894e56911454a629b57bf9bfa68de8c");
-      },
-      type: "POST",
-      // Request body
-      data: JSON.parse(json),
-    })
-      .done(function(data) {
-        for (let i = 0; i < data.length; i++) {
-          score += data.get("documents")[i].get("score");
-        }
-      })
-      .fail(function() {
-        alert("error");
-      });
-    score = score/data.length;
-    console.log(score);
-    return score;
-  });
-}
-
 export default Component.extend({
   searchSuccess: false,
   error: false,
-  graphData: computed(function(){
-    return [];
-  }),
   graphOptions: computed(function(){
     return {};
+  }),
+  data: computed(function(){
+    return [];
   }),
   actions:{
     search(){
       this.set('data', []);
       this.set('error', false);
       this.set('searchSuccess', false);
-      getSentiment(this.get("stockSearch"));
       var self = this;
-      let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/1d";
+      let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/3m";
       $.getJSON(searchURL, function(data){
-        let d = self.get('graphData');
+        console.log(data);
+        let cats = [];
+        let min, max = data[data.length-1].close;
         for(var i=0;i<30;i++){
-          d.push([data[data.length-(i+1)].minute, data[data.length-(i+1)].close]);
+          if(data[data.length-(31-i)].close == undefined){
+            self.data.push(null);
+          }else{
+            let close = data[data.length-(31-i)].close;
+            if(close > max){
+              max = close;
+            }
+            if(close < min){
+              min = close;
+            }
+            self.data.push(close);
+          }
+          cats.push(data[data.length-(31-i)].date);
         }
-        self.set('graphOptions', {chart: {type: 'area'},title: {text:  "Stock Trends"},xAxis:{title:{text: 'XAXIS'},categories: ['stock']},yAxis: {title: {text: 'YAXIS'}},series:{data: self.graphData}});
+        self.set('graphOptions',
+          {chart: {
+            type: 'area'
+          },
+          title: {
+            text:  self.stockSearch.toUpperCase() + " Trends"
+          },
+          xAxis:{
+            title:{
+              text: 'Dates (MM-DD-YYYY)'
+            },
+            categories:cats
+          },
+          yAxis: {
+            title: {
+              text: 'Stock Value (in USD)'
+            }
+          },
+          tooltip: {
+            headerFormat: 'Date: {point.key}<br>',
+            pointFormat: 'Value: ${point.y}',
+            shared: true
+          },
+          series:[{
+            name: self.stockSearch.toUpperCase(),
+            data: self.data
+          }]
+        });
         self.set('searchSuccess', true);
       }).fail(function(e){
         self.set('searchSuccess', false);
