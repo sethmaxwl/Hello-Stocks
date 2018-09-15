@@ -1,6 +1,44 @@
 import Component from '@ember/component';
 import $ from 'jquery';
 import { computed } from '@ember/object';
+
+function getSentiment(stock){
+  let url = "https://api.iextrading.com/1.0/stock/" + stock + "/news";
+  $.getJSON(url, function(data){
+    let json = '{"documents": [';
+    for(let i = 0; i < data.length;){
+      let title = data.get(i + ".headline");
+      json += '{"language": "en", "id": "' + (++i) + '", "text": "' + title + '"}'
+      if(i < data.length) json += ',';
+    }
+    json += "]}";
+    console.log(JSON.parse(json));
+    let score = 0;
+    $.ajax({
+      url: "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
+      beforeSend: function(xhrObj){
+        // Request headers
+        xhrObj.setRequestHeader("Content-Type","application/json");
+        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","a894e56911454a629b57bf9bfa68de8c");
+      },
+      type: "POST",
+      // Request body
+      data: JSON.parse(json),
+    })
+      .done(function(data) {
+        for (let i = 0; i < data.length; i++) {
+          score += data.get("documents")[i].get("score");
+        }
+      })
+      .fail(function() {
+        alert("error");
+      });
+    score = score/data.length;
+    console.log(score);
+    return score;
+  });
+}
+
 export default Component.extend({
   searchSuccess: false,
   error: false,
@@ -15,6 +53,7 @@ export default Component.extend({
       this.set('data', []);
       this.set('error', false);
       this.set('searchSuccess', false);
+      getSentiment(this.get("stockSearch"));
       var self = this;
       let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/1d";
       $.getJSON(searchURL, function(data){
