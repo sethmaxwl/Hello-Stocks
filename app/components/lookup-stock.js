@@ -55,19 +55,19 @@ export default Component.extend({
       var self = this;
       let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/3m";
       $.getJSON(searchURL, function(data){
-        console.log(data);
         let cats = [];
-        let min, max = data[data.length-1].close;
+        let minimum = data[data.length-31].close;
+        let maximum = data[data.length-1].close;
         for(var i=0;i<30;i++){
           if(data[data.length-(31-i)].close == undefined){
             self.data.push(null);
           }else{
             let close = data[data.length-(31-i)].close;
-            if(close > max){
-              max = close;
+            if(close > maximum){
+              maximum = close;
             }
-            if(close < min){
-              min = close;
+            if(close < minimum){
+              minimum = close;
             }
             self.data.push(close);
           }
@@ -89,7 +89,9 @@ export default Component.extend({
           yAxis: {
             title: {
               text: 'Stock Value (in USD)'
-            }
+            },
+            min: minimum-1,
+            max: maximum+1
           },
           tooltip: {
             headerFormat: 'Date: {point.key}<br>',
