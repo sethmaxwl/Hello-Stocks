@@ -1,0 +1,9 @@
+{{#bs-navbar as |navbar|}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="navbar-header">
+    {{#link-to 'index'}}<div class="navbar-brand">Stock Suggester</div>{{/link-to}}
+  </div>
+  {{#link-to 'lookup'}}<div class="nav-link">Lookup Stocks</div>{{/link-to}}
+  {{#link-to 'tracking'}}<div class="nav-link">Track Stocks</div>{{/link-to}}
+</nav>
+{{/bs-navbar}}
