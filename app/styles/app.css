@@ -9,3 +9,32 @@
 a{
   text-decoration: none !important;
 }
+
+.center{
+  margin: auto;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.vertical-center{
+  vertical-align: middle;
+}
+
+.searchbox{
+  margin-top: 10%;
+}
+
+input[type=text] {
+    width: 80%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('https://www.w3schools.com/css/searchicon.png');
+    background-position: 10px 14px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
