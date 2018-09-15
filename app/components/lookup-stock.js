@@ -2,6 +2,46 @@ import Component from '@ember/component';
 import $ from 'jquery';
 import { computed } from '@ember/object';
 
+<<<<<<< HEAD
+=======
+function getSentiment(stock){
+  let url = "https://api.iextrading.com/1.0/stock/" + stock + "/news";
+  $.getJSON(url, function(data){
+    let json = '{"documents": [';
+    for(let i = 0; i < data.length;){
+      let title = data.get(i + ".headline");
+      json += '{"language": "en", "id": "' + (++i) + '", "text": "' + title + '"}'
+      if(i < data.length) json += ',';
+    }
+    json += "]}";
+    let score = 0;
+    $.ajax({
+      url: "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
+      beforeSend: function(xhrObj){
+        // Request headers
+        xhrObj.setRequestHeader("Content-Type","application/json");
+        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","a894e56911454a629b57bf9bfa68de8c");
+      },
+      type: "POST",
+      // Request body
+      data: json,
+    })
+      .done(function(response) {
+        let scores = response.documents;
+        for (let i = 0; i < scores.length; i++) {
+          score += scores.get(i + ".score");
+        }
+        score = score/scores.length;
+        console.log(score);
+        return score;
+      })
+      .fail(function() {
+        alert("BIG ERROR");
+      });
+  });
+}
+
+>>>>>>> 4eb0dbd4a599abfc7392f1d8eda147f81b5b1a0d
 export default Component.extend({
   searchSuccess: false,
   error: false,
