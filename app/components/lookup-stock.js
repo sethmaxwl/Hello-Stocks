@@ -1,15 +1,50 @@
 import Component from '@ember/component';
 import $ from 'jquery';
-
+import { computed } from '@ember/object';
 export default Component.extend({
-  searchSuccess: true,
-  stockSearch: "",
-  graphOptions: {},
+  searchSuccess: false,
+  error: false,
+  graphData: computed(function(){
+    return [];
+  }),
+  graphOptions: {
+    chart: {
+      type: 'area'
+    },
+    title: {
+      text:  "Stock Trends"
+    },
+    xAxis:{
+      title:{
+        text: 'XAXIS'
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'YAXIS'
+      }
+    },
+    series:{
+      data: graphData
+    }
+  },
   actions:{
     search(){
-      let searchURL = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + this.get("stockSearch") + "&interval=5min&apikey=F3XPPAPBQJU1RE34";
+      this.set('data', []);
+      this.set('error', false);
+      this.set('searchSuccess', false);
+      var self = this;
+      let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/1d";
       $.getJSON(searchURL, function(data){
-        console.log(data);
+        let d = self.get('graphData');
+        for(var i=0;i<30;i++){
+          d.push([data[data.length-(i+1)].minute, data[data.length-(i+1)].close]);
+        }
+        console.log(d);
+        self.set('searchSuccess', true);
+      }).fail(function(e){
+        this.set('searchSuccess', false);
+        self.set('error', true);
       });
     }
   }
