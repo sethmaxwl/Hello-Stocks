@@ -42,9 +42,14 @@ function getSentiment(stock){
 
 
 export default Component.extend({
+  input: '',
   percentSentiment: 0,
   searchSuccess: false,
   error: false,
+  landing: true,
+  invest: false,
+  middle: false,
+  noInvest: false,
   graphOptions: computed(function(){
     return {};
   }),
@@ -53,11 +58,15 @@ export default Component.extend({
   }),
   actions:{
     search(){
+      this.set('input', this.stockSearch.toUpperCase());
+      this.set('invest', false);
+      this.set('middle', false);
+      this.set('noInvest', false);
       this.set('data', []);
       this.set('error', false);
       this.set('searchSuccess', false);
       var self = this;
-      let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('stockSearch') + "/chart/3m";
+      let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/chart/3m";
       $.getJSON(searchURL, function(data){
         let cats = [];
         let minimum = data[data.length-31].close;
@@ -83,7 +92,7 @@ export default Component.extend({
             zoomType: 'x',
           },
           title: {
-            text:  self.stockSearch.toUpperCase() + " Trends"
+            text:  self.input + " Trends"
           },
           xAxis:{
             title:{
@@ -104,7 +113,7 @@ export default Component.extend({
             shared: true
           },
           series:[{
-            name: self.stockSearch.toUpperCase(),
+            name: self.input,
             data: self.data
           }]
         });
@@ -113,15 +122,16 @@ export default Component.extend({
         self.set('searchSuccess', false);
         self.set('error', true);
       });
-<<<<<<< HEAD
-      let sentiment = getSentiment(this.stockSearch);
-      setTimeout(function(){
-        self.set('percentSentiment', sentiment);
-        console.log(self.percentSentiment);
-      }, 3000);
-=======
-      let sentiment = getSentiment(this.get('stockSearch'));
->>>>>>> b78a5fd78e62b58eab031b7afdc8f9d6db165605
+      let sentiment = getSentiment(this.input);
+      sentiment = Math.floor(sentiment * 1000) / 10;
+      self.set('percentSentiment', sentiment);
+      if(self.get('percentSentiment') > 75){
+        self.set('invest', true);
+      }else if(self.get('percentSentiment') >= 50){
+        self.set('middle', true);
+      }else{
+        self.set('noInvest', true);
+      }
     }
   }
 });
