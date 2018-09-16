@@ -38,7 +38,11 @@ function getSentiment(stock){
       });
   });
 }
+
+
+
 export default Component.extend({
+  percentSentiment: 0,
   searchSuccess: false,
   error: false,
   graphOptions: computed(function(){
@@ -109,6 +113,11 @@ export default Component.extend({
         self.set('searchSuccess', false);
         self.set('error', true);
       });
+      let sentiment = getSentiment(this.stockSearch);
+      setTimeout(function(){
+        self.set('percentSentiment', sentiment);
+        console.log(self.percentSentiment);
+      }, 3000);
     }
   }
 });

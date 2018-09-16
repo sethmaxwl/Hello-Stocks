@@ -4,7 +4,14 @@
     {{input type="text" value=this.stockSearch placeholder="Search for a stock" enter="search"}}
   </div>
   {{#if searchSuccess}}
+    <div class="row">
+      <div class="col-md-8">
     {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
+      </div>
+      <div class="col-md-4">
+        <p>{{this.percentSentiment}}</p>
+      </div>
+    </div>
   {{/if}}
   {{#if error}}
   <div class="alert alert-danger" style='margin-top: 5%;'>
