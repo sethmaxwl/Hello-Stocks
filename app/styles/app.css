@@ -1,3 +1,12 @@
+html, body{
+  height: 100vh;
+  width: 100%;
+  background-image: url('web_background.png');
+  background-repeat: repeat-y;
+  background-size: cover;
+}
+
+
 .nav-link{
   color: #808080 !important;
 }
@@ -52,10 +61,21 @@ input[type=text] {
 }
 
 .logo{
-  width: 70%;
+  width: 100%;
   height: auto;
 }
 
 #ember247{
-  display: inline-block;
+  width: 60%;
+}
+
+.aboutLink{
+  margin-top: 10%;
+  margin-left: 30%;
+}
+
+.landingLogo{
+  margin-top: 5%;
+  height: 40%;
+  width: 40%;
 }

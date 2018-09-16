@@ -57,10 +57,16 @@ export default Component.extend({
   invest: false,
   middle: false,
   noInvest: false,
+  companyData: computed(function(){
+    return [];
+  }),
   graphOptions: computed(function(){
     return {};
   }),
   data: computed(function(){
+    return [];
+  }),
+  peer: computed(function(){
     return [];
   }),
   actions:{
@@ -103,7 +109,7 @@ export default Component.extend({
           },
           xAxis:{
             title:{
-              text: 'Dates (MM-DD-YYYY)'
+              text: 'Dates (YYYY-MM-DD)'
             },
             categories:cats
           },
@@ -139,23 +145,23 @@ export default Component.extend({
       }else{
         self.set('noInvest', true);
       }
-      let logoUrl = "https://storage.googleapis.com/iex/api/logos/" + this.input.toUpperCase() + ".png";
-      let price;
-      let change;
-      let yearChange;
-      let yearHigh;
-      let yearLow;
+      console.log('start new stuff');
+      let logoUrl = "https://storage.googleapis.com/iex/api/logos/" + this.input + ".png";
       searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/quote?displayPercent=true";
-      $.getJSON(searchURL, function(data){
-        price = data.latestPrice;
-        change = data.changePercent;
-        yearChange = data.ytdChange;
-        yearHigh = data.week52high;
-        yearLow = data.week52low;
+      $.getJSON({url:searchURL, async: false}, function(data){
+        let d = self.get('companyData');
+        d.push(data.latestPrice);
+        d.push(data.changePercent);
+        d.push(data.ytdChange);
+        d.push(data.week52high);
+        d.push(data.week52low);
       });
       searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/peers";
       $.getJSON(searchURL, function(data){
-
+        let p = self.get('peers');
+        for(var i=0;i<data.length;i++){
+          p.push(data[i]);
+        }
       });
     }
   }
