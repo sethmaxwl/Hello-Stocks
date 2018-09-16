@@ -39,7 +39,14 @@ function getSentiment(stock){
   return score;
 }
 
-
+function getCompanyName(stock){
+  let url = "https://api.iextrading.com/1.0/stock/" + stock + "/company";
+  var companyName;
+    $.getJSON({url: url, async: false}).done(function(data){
+      companyName = data.companyName;
+    });
+  return companyName;
+  }
 
 export default Component.extend({
   input: '',
@@ -92,7 +99,7 @@ export default Component.extend({
             zoomType: 'x',
           },
           title: {
-            text:  self.input + " Trends"
+            text:  getCompanyName(self.input) + " Trends"
           },
           xAxis:{
             title:{
