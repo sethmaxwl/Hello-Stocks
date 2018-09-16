@@ -6,7 +6,7 @@
     <h4 class="center vertical-center text-center intro">Wanting to get involved in the stock market but don't know what stocks to invest in?<br>Just use Hello Stocks to search for a stock and see our investment recommendation!</h4>
   </div>
 {{/if}}
-  <div class="center text-center vertical-center" style="padding: 5%;">
+  <div class="center text-center vertical-center" style="padding: 3%;">
     <div class="searchbox">
       <h1>Search for a stock</h1>
       {{input type="text" value=this.stockSearch placeholder="Enter a Stock Symbol" enter="search"}}
@@ -35,10 +35,10 @@
             <div class="row">
               <div class="col outData">
                 <h5>Latest Price: <b>${{companyData.0.latestPrice}}</b></h5>
-                <h5>Change Percent: <b>{{companyData.0.changePercent}}%</b></h5>
-                <h5>Year-to-date change: <b>${{companyData.0.ytdChange}}</b></h5>
-                <h5>Week 52 High: <b>${{companyData.0.week52High}}</b></h5>
-                <h5>Week 52 Low: <b>${{companyData.0.week52Low}}</b></h5>
+                <h5>Daily Change: <b>{{companyData.0.changePercent}}%</b></h5>
+                <h5>Year-to-Date Change: <b>{{companyData.0.ytdChange}}%</b></h5>
+                <h5>52 Week High: <b>${{companyData.0.week52High}}</b></h5>
+                <h5>52 Week Low: <b>${{companyData.0.week52Low}}</b></h5>
                 <br>
               </div>
             </div>
