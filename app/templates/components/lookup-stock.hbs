@@ -1,7 +1,8 @@
-{{#if landing}}
 {{#if hasntSearched}}
   <div class="row center vertical-center">
     <img class="center vertical-center landingLogo" src="assets/logo.png">
+  </div>
+  <div class="row center vertical-center">
     <h4 class="center vertical-center text-center intro">Wanting to get involved in the stock market but don't know what stocks to invest in?<br>Just use Hello Stocks to search for a stock and see our investment recommendation!</h4>
   </div>
 {{/if}}
@@ -10,45 +11,195 @@
       <h1>Search for a stock</h1>
       {{input type="text" value=this.stockSearch placeholder="Enter a Stock Symbol" enter="search"}}
     </div>
-    {{#if searchSuccess}}
+    {{#if error}}
       <div class="out">
-        <div class="row" style="margin-top: 5%;">
-          <div class="col-md-8">
-            {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
-          </div>
-          <div class="col-md-4 center">
-            <div class="text-center">
-              <h3 class="text-center">Recent news for {{this.input}} is</h3>
-            </div>
-            <div class="text-center">
-              <p class="numberDisplay">{{this.percentSentiment}}%</p>
-            </div>
-            <div class="text-center">
-              <h3 class="text-center">positive</h3>
-            </div>
-          </div>
+        <div class="alert alert-danger">
+          <strong>Error!</strong> That stock symbol does not exist in our system. Please try again.
         </div>
-        {{#if error}}
-        <div class="alert alert-danger" style='margin-top: 5%;'>
-          <strong>Error!</strong> That stock symbol is invalid. Please try again.
-        </div>
-        {{/if}}
-        {{#if invest}}
-          <div class="alert alert-success" style="margin-top: 2%;">
-            <strong>Invest!</strong> {{this.input}} tends to be increasing in value, and the average sentiment about {{this.input}} is very positive.
-          </div>
-        {{/if}}
-        {{#if middle}}
-          <div class="alert alert-warning" style="margin-top: 2%;">
-            <strong>Potentially a good investment.</strong> {{this.input}} could be increasing in value, and the average sentiment about {{this.input}} is inconclusive.
-          </div>
-        {{/if}}
-        {{#if noInvest}}
-          <div class="alert alert-danger" style="margin-top: 2%;">
-            <strong>Don't invest!</strong> {{this.input}} tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
-          </div>
-        {{/if}}
       </div>
-      {{/if}}
-  </div>
-{{/if}}
+    {{/if}}
+    {{#if searchSuccess}}
+    <div class="out">
+      <div class="row">
+        <div class="col-md-10">
+          <h1 style="text-align: left;vertical-align: middle;">{{companyData.0.name}}</h1>
+        </div>
+        <div class="col-md-2">
+          <img src={{image}} style="width: 60%; height: auto;">
+        </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="out">
+            <div class="row">
+              <div class="col outData">
+                <h5>Latest Price: <b>${{companyData.0.latestPrice}}</b></h5>
+                <h5>Change Percent: <b>{{companyData.0.changePercent}}%</b></h5>
+                <h5>Year-to-date change: <b>${{companyData.0.ytdChange}}</b></h5>
+                <h5>Week 52 High: <b>${{companyData.0.week52High}}</b></h5>
+                <h5>Week 52 Low: <b>${{companyData.0.week52Low}}</b></h5>
+                <br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col center">
+                <p class="text-center"><b>Recent news for {{this.input}} is</b></p>
+                <p class="numberDisplay">{{this.percentSentiment}}%</p>
+                <p class="text-center"><b>positive</b></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                {{#if noPeer}}
+                  <h4>Sorry. No recommended stocks to show.</h4>
+                {{/if}}
+                {{#if onePeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="row">
+                    <div class="col">
+                      <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if twoPeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="suggested">
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.1.i}}"><p>{{this.peer.1.i}}</p></a>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if threePeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="suggested">
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.1.i}}"><p>{{this.peer.1.i}}</p></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.2.i}}"><p>{{this.peer.2.i}}</p></a>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if fourPeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="suggested">
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.1.i}}"><p>{{this.peer.1.i}}</p></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.2.i}}"><p>{{this.peer.2.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.3.i}}"><p>{{this.peer.3.i}}</p></a>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if fivePeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="suggested">
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.1.i}}"><p>{{this.peer.1.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.2.i}}"><p>{{this.peer.2.i}}</p></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.3.i}}"><p>{{this.peer.3.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.4.i}}"><p>{{this.peer.4.i}}</p></a>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if sixPeer}}
+                  <h4>If you are interested in {{companyData.0.name}}, you may also be interested in:</h4>
+                  <div class="suggested">
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.0.i}}"><p>{{this.peer.0.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.1.i}}"><p>{{this.peer.1.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.2.i}}"><p>{{this.peer.2.i}}</p></a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.3.i}}"><p>{{this.peer.3.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.4.i}}"><p>{{this.peer.4.i}}</p></a>
+                      </div>
+                      <div class="col">
+                        <a class="suggested" href="search?symbol={{this.peer.5.i}}"><p>{{this.peer.5.i}}</p></a>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="out">
+            <div class="row">
+              <div class="col">
+                {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
+              </div>
+            </div>
+            {{#if error}}
+            <div class="alert alert-danger" style='margin-top: 5%;'>
+              <strong>Error!</strong> That stock symbol is invalid. Please try again.
+            </div>
+            {{/if}}
+            {{#if invest}}
+              <div class="alert alert-success" style="margin-top: 2%;">
+                <strong>Invest!</strong> {{this.input}} tends to be increasing in value, and the average sentiment about {{this.input}} is very positive.
+              </div>
+            {{/if}}
+            {{#if middle}}
+              <div class="alert alert-warning" style="margin-top: 2%;">
+                <strong>Potentially a good investment.</strong> {{this.input}} could be increasing in value, and the average sentiment about {{this.input}} is inconclusive.
+              </div>
+            {{/if}}
+            {{#if noInvest}}
+              <div class="alert alert-danger" style="margin-top: 2%;">
+                <strong>Don't invest!</strong> {{this.input}} tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    </div>

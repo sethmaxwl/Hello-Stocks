@@ -9,6 +9,7 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('lookup');
   this.route('about');
+  this.route('search');
 });
 
 export default Router;

@@ -54,7 +54,7 @@ input[type=text] {
 
 .numberDisplay{
   color: #eee;
-  font-size: 4em;
+  font-size: 3em;
   font-weight: bold;
   font-family: Helvetica;
   text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
@@ -88,6 +88,19 @@ input[type=text] {
 .out{
   margin-top: 5%;
   background-color: #f2f2f2;
-  border-radius: 15%;
+  border-radius: 50px;
   padding: 5%;
+}
+
+.outData{
+  line-height: em;
+}
+
+.suggested{
+  color: #808080 !important;
+}
+
+.suggested:hover{
+  color: #454545 !important;
+  text-decoration: none !important;
 }

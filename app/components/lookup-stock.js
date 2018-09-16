@@ -49,6 +49,7 @@ function getCompanyName(stock){
   }
 
 export default Component.extend({
+  loading: false,
   input: '',
   percentSentiment: 0,
   searchSuccess: false,
@@ -58,6 +59,14 @@ export default Component.extend({
   middle: false,
   noInvest: false,
   hasntSearched: true,
+  onePeer: false,
+  twoPeer: false,
+  threePeer: false,
+  fourPeer: false,
+  fivePeer: false,
+  sixPeer: false,
+  noPeer: false,
+  image: '',
   companyData: computed(function(){
     return [];
   }),
@@ -72,6 +81,7 @@ export default Component.extend({
   }),
   actions:{
     search(){
+      this.set('loading', true);
       this.set('hasntSearched', false);
       this.set('input', this.stockSearch.toUpperCase());
       this.set('invest', false);
@@ -80,6 +90,7 @@ export default Component.extend({
       this.set('data', []);
       this.set('error', false);
       this.set('searchSuccess', false);
+      this.set('companyData', []);
       var self = this;
       let searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/chart/3m";
       $.getJSON(searchURL, function(data){
@@ -148,24 +159,46 @@ export default Component.extend({
       }else{
         self.set('noInvest', true);
       }
-      console.log('start new stuff');
-      let logoUrl = "https://storage.googleapis.com/iex/api/logos/" + this.input + ".png";
+      this.set('image', "https://storage.googleapis.com/iex/api/logos/" + this.input + ".png");
       searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/quote?displayPercent=true";
       $.getJSON({url:searchURL, async: false}, function(data){
         let d = self.get('companyData');
-        d.push(data.latestPrice);
-        d.push(data.changePercent);
-        d.push(data.ytdChange);
-        d.push(data.week52high);
-        d.push(data.week52low);
+        let da = {
+          name: getCompanyName(self.input),
+          latestPrice: data.latestPrice,
+          changePercent: Math.floor(data.changePercent * 10000) / 10000,
+          ytdChange: Math.floor(data.ytdChange * 100) / 100,
+          week52High: data.week52High,
+          week52Low: data.week52Low
+        };
+        d.push(da);
       });
       searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/peers";
-      $.getJSON(searchURL, function(data){
-        let p = self.get('peers');
+      $.getJSON({url:searchURL, async:false}, function(data){
+        let p = self.get('peer');
         for(var i=0;i<data.length;i++){
-          p.push(data[i]);
+          p.push({'i': data[i]});
+        }
+      }).then(function(){
+        let l = self.get('peer').length;
+        if(l == 1){
+          self.set('onePeer', true);
+        }else if(l == 2){
+          self.set('twoPeer', true);
+        }else if(l == 3){
+          self.set('threePeer', true);
+        }else if(l == 4){
+          self.set('fourPeer', true);
+        }else if(l == 5){
+          self.set('fivePeer', true);
+        }else if(l == 0){
+          self.set('noPeer', true);
+        }else{
+          self.set('sixPeer', true);
         }
       });
+      console.log(this.peer);
+      this.set('loading', false);
     }
   }
 });
