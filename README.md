@@ -1,7 +1,6 @@
-# stock-suggester
+# Hello Stocks
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This application is intended for people who are interested in investing in the stock market but are unsure what exactly to invest in. Users can search for stocks, where they can see raw data about the stocks they are interested in, a recommendation of whether to invest or not, and links to similar stocks the user may be interested in.
 
 ## Prerequisites
 

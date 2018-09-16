@@ -108,3 +108,8 @@ input[type=text] {
   color: #454545 !important;
   text-decoration: none !important;
 }
+
+.aboutPage{
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+}
