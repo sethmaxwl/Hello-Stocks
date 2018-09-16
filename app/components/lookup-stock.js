@@ -75,7 +75,8 @@ export default Component.extend({
         }
         self.set('graphOptions',
           {chart: {
-            type: 'area'
+            type: 'area',
+            zoomType: 'x',
           },
           title: {
             text:  self.stockSearch.toUpperCase() + " Trends"
@@ -95,7 +96,7 @@ export default Component.extend({
           },
           tooltip: {
             headerFormat: 'Date: {point.key}<br>',
-            pointFormat: 'Value: ${point.y}',
+            pointFormat: 'Value: ${point.y:.2f}',
             shared: true
           },
           series:[{
