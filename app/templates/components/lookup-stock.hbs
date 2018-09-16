@@ -11,42 +11,44 @@
       {{input type="text" value=this.stockSearch placeholder="Enter a Stock Symbol" enter="search"}}
     </div>
     {{#if searchSuccess}}
-      <div class="row" style="margin-top: 5%;">
-        <div class="col-md-8">
-      {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
+      <div class="out">
+        <div class="row" style="margin-top: 5%;">
+          <div class="col-md-8">
+            {{high-charts mode=mode chartOptions=this.graphOptions content=this.data}}
+          </div>
+          <div class="col-md-4 center">
+            <div class="text-center">
+              <h3 class="text-center">Recent news for {{this.input}} is</h3>
+            </div>
+            <div class="text-center">
+              <p class="numberDisplay">{{this.percentSentiment}}%</p>
+            </div>
+            <div class="text-center">
+              <h3 class="text-center">positive</h3>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4 center">
-          <div class="text-center">
-            <h3 class="text-center">Recent news for {{this.input}} is</h3>
-          </div>
-          <div class="text-center">
-            <p class="numberDisplay">{{this.percentSentiment}}%</p>
-          </div>
-          <div class="text-center">
-            <h3 class="text-center">positive</h3>
-          </div>
+        {{#if error}}
+        <div class="alert alert-danger" style='margin-top: 5%;'>
+          <strong>Error!</strong> That stock symbol is invalid. Please try again.
         </div>
+        {{/if}}
+        {{#if invest}}
+          <div class="alert alert-success" style="margin-top: 2%;">
+            <strong>Invest!</strong> {{this.input}} tends to be increasing in value, and the average sentiment about {{this.input}} is very positive.
+          </div>
+        {{/if}}
+        {{#if middle}}
+          <div class="alert alert-warning" style="margin-top: 2%;">
+            <strong>Potentially a good investment.</strong> {{this.input}} could be increasing in value, and the average sentiment about {{this.input}} is inconclusive.
+          </div>
+        {{/if}}
+        {{#if noInvest}}
+          <div class="alert alert-danger" style="margin-top: 2%;">
+            <strong>Don't invest!</strong> {{this.input}} tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
+          </div>
+        {{/if}}
       </div>
-    {{/if}}
-    {{#if error}}
-    <div class="alert alert-danger" style='margin-top: 5%;'>
-      <strong>Error!</strong> That stock symbol is invalid. Please try again.
-    </div>
-    {{/if}}
-    {{#if invest}}
-      <div class="alert alert-success" style="margin-top: 2%;">
-        <strong>Invest!</strong> {{this.input}} tends to be increasing in value, and the average sentiment about {{this.input}} is very positive.
-      </div>
-    {{/if}}
-    {{#if middle}}
-      <div class="alert alert-warning" style="margin-top: 2%;">
-        <strong>Potentially a good investment.</strong> {{this.input}} could be increasing in value, and the average sentiment about {{this.input}} is inconclusive.
-      </div>
-    {{/if}}
-    {{#if noInvest}}
-      <div class="alert alert-danger" style="margin-top: 2%;">
-        <strong>Don't invest!</strong> {{this.input}} tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
-      </div>
-    {{/if}}
+      {{/if}}
   </div>
 {{/if}}

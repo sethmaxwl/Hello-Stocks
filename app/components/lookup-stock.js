@@ -105,7 +105,7 @@ export default Component.extend({
           {chart: {
             type: 'area',
             zoomType: 'x',
-            backgroundColor: '#e6e6e6'
+            backgroundColor: '#f2f2f2'
           },
           title: {
             text:  getCompanyName(self.input) + " Trends"

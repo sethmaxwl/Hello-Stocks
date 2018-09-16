@@ -8,7 +8,6 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('lookup');
-  this.route('tracking');
   this.route('about');
 });
 
