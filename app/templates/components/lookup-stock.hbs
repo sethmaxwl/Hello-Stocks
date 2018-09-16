@@ -1,8 +1,14 @@
 {{#if landing}}
+{{#if hasntSearched}}
+  <div class="row center vertical-center">
+    <img class="center vertical-center landingLogo" src="assets/logo.png">
+    <h4 class="center vertical-center text-center intro">Wanting to get involved in the stock market but don't know what stocks to invest in?<br>Just use Hello Stocks to search for a stock and see our investment recommendation!</h4>
+  </div>
+{{/if}}
   <div class="center text-center vertical-center" style="padding: 5%;">
     <div class="searchbox">
       <h1>Search for a stock</h1>
-      {{input type="text" value=this.stockSearch placeholder="Search for a stock" enter="search"}}
+      {{input type="text" value=this.stockSearch placeholder="Enter a Stock Symbol" enter="search"}}
     </div>
     {{#if searchSuccess}}
       <div class="row" style="margin-top: 5%;">

@@ -32,7 +32,7 @@ a{
 }
 
 .searchbox{
-  margin-top: 10%;
+  margin-top: 5%;
 }
 
 input[type=text] {
@@ -78,4 +78,9 @@ input[type=text] {
   margin-top: 5%;
   height: 40%;
   width: 40%;
+}
+
+.intro{
+  margin-top: 5%;
+  line-height: 2em;
 }

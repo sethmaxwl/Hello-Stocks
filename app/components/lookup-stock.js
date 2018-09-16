@@ -57,6 +57,7 @@ export default Component.extend({
   invest: false,
   middle: false,
   noInvest: false,
+  hasntSearched: true,
   companyData: computed(function(){
     return [];
   }),
@@ -71,6 +72,7 @@ export default Component.extend({
   }),
   actions:{
     search(){
+      this.set('hasntSearched', false);
       this.set('input', this.stockSearch.toUpperCase());
       this.set('invest', false);
       this.set('middle', false);
@@ -103,6 +105,7 @@ export default Component.extend({
           {chart: {
             type: 'area',
             zoomType: 'x',
+            backgroundColor: '#e6e6e6'
           },
           title: {
             text:  getCompanyName(self.input) + " Trends"

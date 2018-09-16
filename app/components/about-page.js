@@ -1,5 +1,9 @@
 import Component from '@ember/component';
 
 export default Component.extend({
-  landing: false
+  init: function(){
+    this._super();
+    this.set('renderLookup', false);
+    console.log(this.renderLookup);
+  }
 });
