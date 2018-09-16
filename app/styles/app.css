@@ -6,6 +6,10 @@ html, body{
   background-size: cover;
 }
 
+hr {
+  clear: both;
+  visibility: hidden;
+}
 
 .nav-link{
   color: #808080 !important;
