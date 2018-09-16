@@ -1,5 +1,5 @@
 {{#if landing}}
-  <div class="center text-center vertical-center">
+  <div class="center text-center vertical-center" style="padding: 5%;">
     <div class="searchbox">
       <h1>Search for a stock</h1>
       {{input type="text" value=this.stockSearch placeholder="Search for a stock" enter="search"}}
@@ -37,9 +37,9 @@
         <strong>Potentially a good investment.</strong> {{this.input}} could be increasing in value, and the average sentiment about {{this.input}} is inconclusive.
       </div>
     {{/if}}
-    {{#if notInvest}}
+    {{#if noInvest}}
       <div class="alert alert-danger" style="margin-top: 2%;">
-        <strong>Don't invest!</strong> {{this.input}}tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
+        <strong>Don't invest!</strong> {{this.input}} tends to be decreasing in value, and the average sentiment about {{this.input}} is not very good.
       </div>
     {{/if}}
   </div>

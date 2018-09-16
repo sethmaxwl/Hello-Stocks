@@ -96,7 +96,7 @@ export default Component.extend({
           },
           xAxis:{
             title:{
-              text: 'Dates (MM-DD-YYYY)'
+              text: 'Dates (YYYY-MM-DD)'
             },
             categories:cats
           },
