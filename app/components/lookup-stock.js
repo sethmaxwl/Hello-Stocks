@@ -125,7 +125,7 @@ export default Component.extend({
       let sentiment = getSentiment(this.input);
       sentiment = Math.floor(sentiment * 1000) / 10;
       self.set('percentSentiment', sentiment);
-      if(self.get('percentSentiment') > 75){
+      if(self.get('percentSentiment') >= 75){
         self.set('invest', true);
       }else if(self.get('percentSentiment') >= 50){
         self.set('middle', true);
