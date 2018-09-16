@@ -39,7 +39,14 @@ function getSentiment(stock){
   return score;
 }
 
-
+function getCompanyName(stock){
+  let url = "https://api.iextrading.com/1.0/stock/" + stock + "/company";
+  let companyName;
+    $.getJSON({url: url, async: false}).done(function(data){
+      companyName = data.companyName;
+    });
+  return companyName;
+  }
 
 export default Component.extend({
   input: '',
@@ -92,7 +99,7 @@ export default Component.extend({
             zoomType: 'x',
           },
           title: {
-            text:  self.input + " Trends"
+            text:  getCompanyName(self.input) + " Trends"
           },
           xAxis:{
             title:{
@@ -132,6 +139,24 @@ export default Component.extend({
       }else{
         self.set('noInvest', true);
       }
+      let logoUrl = "https://storage.googleapis.com/iex/api/logos/" + this.input.toUpperCase() + ".png";
+      let price;
+      let change;
+      let yearChange;
+      let yearHigh;
+      let yearLow;
+      searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/quote?displayPercent=true";
+      $.getJSON(searchURL, function(data){
+        price = data.latestPrice;
+        change = data.changePercent;
+        yearChange = data.ytdChange;
+        yearHigh = data.week52high;
+        yearLow = data.week52low;
+      });
+      searchURL = "https://api.iextrading.com/1.0/stock/" + this.get('input') + "/peers";
+      $.getJSON(searchURL, function(data){
+
+      });
     }
   }
 });
