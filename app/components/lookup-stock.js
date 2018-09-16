@@ -4,7 +4,8 @@ import { computed } from '@ember/object';
 
 function getSentiment(stock){
   let url = "https://api.iextrading.com/1.0/stock/" + stock + "/news";
-  $.getJSON(url, function(data){
+  var score = 0;
+  $.getJSON({url: url, async: false}).done(function(data){
     let json = '{"documents": [';
     for(let i = 0; i < data.length;){
       let title = data.get(i + ".headline");
@@ -12,7 +13,6 @@ function getSentiment(stock){
       if(i < data.length) json += ',';
     }
     json += "]}";
-    let score = 0;
     $.ajax({
       url: "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment",
       beforeSend: function(xhrObj){
@@ -23,6 +23,7 @@ function getSentiment(stock){
       type: "POST",
       // Request body
       data: json,
+      async: false,
     })
       .done(function(response) {
         let scores = response.documents;
@@ -30,13 +31,12 @@ function getSentiment(stock){
           score += scores.get(i + ".score");
         }
         score = score/scores.length;
-        console.log(score);
-        return score;
       })
       .fail(function() {
         alert("BIG ERROR");
       });
   });
+  return score;
 }
 
 
@@ -113,11 +113,15 @@ export default Component.extend({
         self.set('searchSuccess', false);
         self.set('error', true);
       });
+<<<<<<< HEAD
       let sentiment = getSentiment(this.stockSearch);
       setTimeout(function(){
         self.set('percentSentiment', sentiment);
         console.log(self.percentSentiment);
       }, 3000);
+=======
+      let sentiment = getSentiment(this.get('stockSearch'));
+>>>>>>> b78a5fd78e62b58eab031b7afdc8f9d6db165605
     }
   }
 });
